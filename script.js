@@ -27,11 +27,16 @@ function calculateSafeWeightLossDeficit(tdee) {
 }
 
 function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
-    // Validate input values
-    if (isNaN(weightLoss) || isNaN(timeframe) || timeframe <= 0) {
-        console.log('Invalid input:', { weightLoss, timeframe });
+    // Validate all input values
+    if (isNaN(tdee) || isNaN(weightLoss) || isNaN(timeframe) || timeframe <= 0) {
+        console.log('Invalid input:', { tdee, weightLoss, timeframe });
         return null;
     }
+
+    // Ensure all values are positive numbers
+    tdee = Math.max(0, tdee);
+    weightLoss = Math.max(0, weightLoss);
+    timeframe = Math.max(1, timeframe);
 
     // Calculate weekly weight loss goal
     const weeklyWeightLoss = weightLoss / timeframe;
@@ -43,21 +48,17 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     const safeDeficit = calculateSafeWeightLossDeficit(tdee);
     const finalDeficit = Math.min(dailyDeficit, safeDeficit);
     
+    // Calculate final calories
+    const result = Math.max(0, tdee - finalDeficit);
+    
     // Log intermediate calculations for debugging
     console.log('Weekly Weight Loss:', weeklyWeightLoss);
     console.log('Daily Deficit:', dailyDeficit);
     console.log('Safe Deficit:', safeDeficit);
     console.log('Final Deficit:', finalDeficit);
-    
-    // Ensure we don't go below minimum safe calories (1200 for women, 1500 for men)
-    const minSafeCalories = 1500; // Default minimum safe calories
-    const result = Math.round(tdee - finalDeficit);
-    
-    if (isNaN(result)) {
-        console.log('NaN result detected:', { tdee, finalDeficit });
-    }
-    
-    return result >= minSafeCalories ? result : null;
+    console.log('Result:', result);
+
+    return Math.round(result) >= minSafeCalories ? Math.round(result) : null;
 }
 
 // DOM Elements
