@@ -94,14 +94,15 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     return Math.round(result);
 }
 
-// DOM Elements
-const calculateBtn = document.getElementById('calculate');
-const resultsSection = document.getElementById('results');
-const bmiResult = document.getElementById('bmiResult');
-const bmrResult = document.getElementById('bmrResult');
-const tdeeResult = document.getElementById('tdeeResult');
-const safeDeficit = document.getElementById('safeDeficit');
-const weightLossCalories = document.getElementById('weightLossCalories');
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const calculateBtn = document.getElementById('calculate');
+    const resultsSection = document.getElementById('results');
+    const bmiResult = document.getElementById('bmiResult');
+    const bmrResult = document.getElementById('bmrResult');
+    const tdeeResult = document.getElementById('tdeeResult');
+    const safeDeficit = document.getElementById('safeDeficit');
+    const weightLossCalories = document.getElementById('weightLossCalories');
 
 // Event Listener
 calculateBtn.addEventListener('click', () => {
