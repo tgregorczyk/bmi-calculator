@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI & Calorie Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BMI & Calorie Calculator</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="sex">Sex:</label>
+                <select id="sex" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="weightLoss">Weight Loss Goal (kg):</label>
+                <input type="number" id="weightLoss" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="timeframe">Timeframe (weeks):</label>
+                <input type="number" id="timeframe" required>
+            </div>
+        </div>
+
+        <button id="calculate">Calculate</button>
+
+        <div class="results-section" id="results">
+            <div class="result-item">
+                <h3>Current BMI:</h3>
+                <p id="bmiResult"></p>
+            </div>
+            
+            <div class="result-item">
+                <h3>Basal Metabolic Rate (BMR):</h3>
+                <p id="bmrResult"></p>
+            </div>
+
+            <div class="result-item">
+                <h3>Total Daily Energy Expenditure (TDEE):</h3>
+                <p id="tdeeResult"></p>
+            </div>
+
+            <div class="result-item">
+                <h3>Safe Weight Loss Deficit:</h3>
+                <p id="safeDeficit"></p>
+            </div>
+
+            <div class="result-item">
+                <h3>Recommended Calories for Weight Loss:</h3>
+                <p id="weightLossCalories"></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
