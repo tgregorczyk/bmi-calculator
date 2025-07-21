@@ -58,7 +58,7 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     // Validate all input values
     if (isNaN(tdee) || isNaN(weightLoss) || isNaN(timeframe) || timeframe <= 0) {
         console.log('Invalid input:', { tdee, weightLoss, timeframe });
-        return null;
+        return { value: null, reason: 'invalid_input' };
     }
 
     // Ensure all values are positive numbers
@@ -80,6 +80,9 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     const result = Math.max(0, tdee - finalDeficit);
     
     // Log intermediate calculations for debugging
+    console.log('TDEE:', tdee);
+    console.log('Weight Loss:', weightLoss);
+    console.log('Timeframe:', timeframe);
     console.log('Weekly Weight Loss:', weeklyWeightLoss);
     console.log('Daily Deficit:', dailyDeficit);
     console.log('Safe Deficit:', safeDeficit);
@@ -88,10 +91,11 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
 
     // Ensure we don't go below minimum safe calories
     if (result < minSafeCalories) {
-        return null;
+        console.log('Result below minimum safe calories:', result, minSafeCalories);
+        return { value: null, reason: 'below_minimum', calculated: Math.round(result) };
     }
     
-    return Math.round(result);
+    return { value: Math.round(result), reason: null };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -135,7 +139,7 @@ calculateBtn.addEventListener('click', () => {
     console.log('Weight Loss:', weightLoss);
     console.log('Timeframe:', timeframe);
     
-    const weightLossCaloriesNeeded = calculateWeightLossCalories(tdee, weightLoss, timeframe);
+    const weightLossCaloriesResult = calculateWeightLossCalories(tdee, weightLoss, timeframe);
 
     // Display results
     resultsSection.style.display = 'grid';
@@ -146,9 +150,21 @@ calculateBtn.addEventListener('click', () => {
     safeDeficit.textContent = `${safeDeficitValue} kcal/day`;
     
     // Handle null values for weight loss calories
-    if (weightLossCaloriesNeeded === null) {
-        weightLossCalories.textContent = 'Please enter valid weight loss goal and timeframe';
+    if (weightLossCaloriesResult.value === null) {
+        if (weightLossCaloriesResult.reason === 'below_minimum') {
+            // Show the calculated value with warning if possible, otherwise show a generic warning
+            if (typeof weightLossCaloriesResult.calculated === 'number') {
+                weightLossCalories.innerHTML = `<span style=\"color: red; font-weight: bold;\">${weightLossCaloriesResult.calculated} kcal</span><br><span style=\"color: red; font-size: 0.75em;\">(Warning: below recommended safe minimum of 1500 kcal/day)</span>`;
+            } else {
+                weightLossCalories.innerHTML = `<span style=\"color: red;\">Recommended calories would be below the safe minimum (1500 kcal/day).</span>`;
+            }
+        } else {
+            weightLossCalories.textContent = 'Please enter valid weight loss goal and timeframe';
+        }
+    } else if (weightLossCaloriesResult.value < minSafeCalories) {
+        weightLossCalories.innerHTML = `<span style=\"color: red; font-weight: bold;\">${weightLossCaloriesResult.value} kcal</span><br><span style=\"color: red; font-size: 0.75em;\">(Warning: below recommended safe minimum of 1500 kcal/day)</span>`;
     } else {
-        weightLossCalories.textContent = `${weightLossCaloriesNeeded} kcal`;
+        weightLossCalories.textContent = `${weightLossCaloriesResult.value} kcal`;
     }
+  });
 });

@@ -17,30 +17,20 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-/* Decorative elements */
-.input-section::before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(45deg, #4CAF50, #8BC34A);
-    border-radius: 10px 10px 0 0;
-    opacity: 0.1;
+/* Remove background/blur from header and footer */
+.container > h1,
+.container > .subtitle,
+.container > footer {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
 }
 
-.results-section::before {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(45deg, #FFC107, #FF9800);
-    border-radius: 0 0 10px 10px;
-    opacity: 0.1;
-}
+/* Decorative elements */
+/* Removed input-section and results-section decorative backgrounds for header/footer clarity */
+/* .input-section::before { }
+   .results-section::before { } */
+
 
 /* Add some decorative icons */
 .input-group {
