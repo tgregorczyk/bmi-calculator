@@ -52,6 +52,8 @@ function calculateSafeWeightLossDeficit(tdee) {
     return 550;
 }
 
+const minSafeCalories = 1500; // Default minimum safe calories
+
 function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     // Validate all input values
     if (isNaN(tdee) || isNaN(weightLoss) || isNaN(timeframe) || timeframe <= 0) {
@@ -84,7 +86,12 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     console.log('Final Deficit:', finalDeficit);
     console.log('Result:', result);
 
-    return Math.round(result) >= minSafeCalories ? Math.round(result) : null;
+    // Ensure we don't go below minimum safe calories
+    if (result < minSafeCalories) {
+        return null;
+    }
+    
+    return Math.round(result);
 }
 
 // DOM Elements
