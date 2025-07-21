@@ -115,20 +115,19 @@ calculateBtn.addEventListener('click', () => {
     const weight = parseFloat(document.getElementById('weight').value);
     const age = parseInt(document.getElementById('age').value);
     const sex = document.getElementById('sex').value;
-    const activityLevel = document.getElementById('activity').value;
+    const activity = document.getElementById('activity').value;
     const weightLoss = parseFloat(document.getElementById('weightLoss').value);
     const timeframe = parseFloat(document.getElementById('timeframe').value);
 
     // Validate inputs
-    if (isNaN(height) || isNaN(weight) || isNaN(age) || isNaN(weightLoss)) {
-        alert('Please fill in all fields with valid numbers');
+    if (!height || !weight || !age || !sex || !activity || !weightLoss || !timeframe) {
         return;
     }
 
     // Perform calculations
     const bmi = calculateBMI(weight, height);
     const bmr = calculateBMR(age, weight, height, sex);
-    const tdee = calculateTDEE(bmr, activityLevel);
+    const tdee = calculateTDEE(bmr, activity);
     const safeDeficitValue = calculateSafeWeightLossDeficit(tdee);
     
     // Log intermediate values for debugging
@@ -149,6 +148,9 @@ calculateBtn.addEventListener('click', () => {
     tdeeResult.textContent = `${tdee} kcal`;
     safeDeficit.textContent = `${safeDeficitValue} kcal/day`;
     
+    // Show diet proposal modal after displaying results
+    showDietModal();
+
     // Handle null values for weight loss calories
     if (weightLossCaloriesResult.value === null) {
         if (weightLossCaloriesResult.reason === 'below_minimum') {

@@ -73,22 +73,47 @@
                 <h3>Basal Metabolic Rate (BMR):</h3>
                 <p id="bmrResult"></p>
             </div>
-
+            
             <div class="result-item">
                 <h3>Total Daily Energy Expenditure (TDEE):</h3>
                 <p id="tdeeResult"></p>
             </div>
-
+            
             <div class="result-item">
-                <h3>Safe Weight Loss Deficit:</h3>
+                <h3>Safe Calorie Deficit:</h3>
                 <p id="safeDeficit"></p>
             </div>
-
+            
             <div class="result-item">
                 <h3>Recommended Calories for Weight Loss:</h3>
                 <p id="weightLossCalories"></p>
             </div>
         </div>
+
+        <!-- Diet Proposal Subscription Modal -->
+        <div id="dietModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Subscribe for a Custom Diet Proposal</h2>
+<p style="font-size:1.1em; font-weight:bold; color:#388e3c; margin-bottom:1em;">Get your custom diet for free!</p>
+        <form id="dietForm" autocomplete="off">
+          <div class="input-group">
+            <label for="dietEmail">Email address:</label>
+            <input type="email" id="dietEmail" name="dietEmail" required placeholder="you@email.com">
+          </div>
+          <div class="input-group">
+            <label>
+              <input type="checkbox" id="dietConsent" required>
+              I agree to receive communication via email.
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" id="subscribeBtn" disabled>Subscribe</button>
+            <button type="button" id="cancelModal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
     </div>
     <script src="script.js"></script>
 </body>
