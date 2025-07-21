@@ -27,6 +27,11 @@ function calculateSafeWeightLossDeficit(tdee) {
 }
 
 function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
+    // Validate input values
+    if (isNaN(weightLoss) || isNaN(timeframe) || timeframe <= 0) {
+        return null;
+    }
+
     // Calculate weekly weight loss goal
     const weeklyWeightLoss = weightLoss / timeframe;
     
@@ -37,7 +42,10 @@ function calculateWeightLossCalories(tdee, weightLoss, timeframe) {
     const safeDeficit = calculateSafeWeightLossDeficit(tdee);
     const finalDeficit = Math.min(dailyDeficit, safeDeficit);
     
-    return Math.round(tdee - finalDeficit);
+    // Ensure we don't go below minimum safe calories (1200 for women, 1500 for men)
+    const minSafeCalories = 1500; // Default minimum safe calories
+    const result = Math.round(tdee - finalDeficit);
+    return result >= minSafeCalories ? result : null;
 }
 
 // DOM Elements
@@ -79,5 +87,11 @@ calculateBtn.addEventListener('click', () => {
     bmrResult.textContent = `${bmr} kcal`;
     tdeeResult.textContent = `${tdee} kcal`;
     safeDeficit.textContent = `${safeDeficitValue} kcal/day`;
-    weightLossCalories.textContent = `${weightLossCaloriesNeeded} kcal`;
+    
+    // Handle null values for weight loss calories
+    if (weightLossCaloriesNeeded === null) {
+        weightLossCalories.textContent = 'Please enter valid weight loss goal and timeframe';
+    } else {
+        weightLossCalories.textContent = `${weightLossCaloriesNeeded} kcal`;
+    }
 });
