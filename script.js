@@ -1,7 +1,33 @@
 // Calculation functions
+const BMI_CATEGORIES = [
+    { min: null, max: 15.9, category: "Severely underweight" },
+    { min: 16.0, max: 16.9, category: "Moderately underweight" },
+    { min: 17.0, max: 18.4, category: "Mildly underweight" },
+    { min: 18.5, max: 24.9, category: "Normal weight" },
+    { min: 25.0, max: 29.9, category: "Overweight" },
+    { min: 30.0, max: 34.9, category: "Obesity class I (mild)" },
+    { min: 35.0, max: 39.9, category: "Obesity class II (moderate)" },
+    { min: 40.0, max: null, category: "Obesity class III (severe)" }
+];
+
 function calculateBMI(weight, height) {
     const heightM = height / 100; // Convert cm to meters
-    return (weight / (heightM * heightM)).toFixed(1);
+    const bmi = (weight / (heightM * heightM)).toFixed(1);
+    return {
+        value: bmi,
+        category: getBMICategory(bmi)
+    };
+}
+
+function getBMICategory(bmi) {
+    const bmiValue = parseFloat(bmi);
+    for (let category of BMI_CATEGORIES) {
+        if ((category.min === null || bmiValue >= category.min) &&
+            (category.max === null || bmiValue <= category.max)) {
+            return category.category;
+        }
+    }
+    return "Unknown category";
 }
 
 function calculateBMR(age, weight, height, sex) {
@@ -105,7 +131,8 @@ calculateBtn.addEventListener('click', () => {
 
     // Display results
     resultsSection.style.display = 'grid';
-    bmiResult.textContent = bmi;
+    const { value: bmiValue, category: bmiCategory } = bmi;
+    bmiResult.textContent = `${bmiValue} (${bmiCategory})`;
     bmrResult.textContent = `${bmr} kcal`;
     tdeeResult.textContent = `${tdee} kcal`;
     safeDeficit.textContent = `${safeDeficitValue} kcal/day`;
