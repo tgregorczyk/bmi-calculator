@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const safeDeficit = document.getElementById('safeDeficit');
     const weightLossCalories = document.getElementById('weightLossCalories');
 
-// Event Listener
+    // Event Listener
 calculateBtn.addEventListener('click', () => {
     // Get input values
     const height = parseFloat(document.getElementById('height').value);
