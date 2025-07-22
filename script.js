@@ -148,25 +148,32 @@ calculateBtn.addEventListener('click', () => {
     tdeeResult.textContent = `${tdee} kcal`;
     safeDeficit.textContent = `${safeDeficitValue} kcal/day`;
     
-    // Show diet proposal modal after displaying results
-    showDietModal();
-
-    // Handle null values for weight loss calories
+    // Handle weight loss calories display with warning for values below minSafeCalories
     if (weightLossCaloriesResult.value === null) {
-        if (weightLossCaloriesResult.reason === 'below_minimum') {
-            // Show the calculated value with warning if possible, otherwise show a generic warning
-            if (typeof weightLossCaloriesResult.calculated === 'number') {
-                weightLossCalories.innerHTML = `<span style=\"color: red; font-weight: bold;\">${weightLossCaloriesResult.calculated} kcal</span><br><span style=\"color: red; font-size: 0.75em;\">(Warning: below recommended safe minimum of 1500 kcal/day)</span>`;
-            } else {
-                weightLossCalories.innerHTML = `<span style=\"color: red;\">Recommended calories would be below the safe minimum (1500 kcal/day).</span>`;
-            }
+        if (weightLossCaloriesResult.reason === 'below_minimum' && typeof weightLossCaloriesResult.calculated === 'number') {
+            // Show the calculated value with warning in red
+            weightLossCalories.innerHTML = `
+                <span style="color: red; font-weight: bold;">${weightLossCaloriesResult.calculated} kcal</span>
+                <br>
+                <span style="color: red; font-size: 0.75em;">(Warning: below recommended safe minimum of 1500 kcal/day)</span>
+            `;
         } else {
             weightLossCalories.textContent = 'Please enter valid weight loss goal and timeframe';
         }
-    } else if (weightLossCaloriesResult.value < minSafeCalories) {
-        weightLossCalories.innerHTML = `<span style=\"color: red; font-weight: bold;\">${weightLossCaloriesResult.value} kcal</span><br><span style=\"color: red; font-size: 0.75em;\">(Warning: below recommended safe minimum of 1500 kcal/day)</span>`;
     } else {
-        weightLossCalories.textContent = `${weightLossCaloriesResult.value} kcal`;
+        // If we have a value but it's below the safe minimum, show it with a warning
+        if (weightLossCaloriesResult.value < minSafeCalories) {
+            weightLossCalories.innerHTML = `
+                <span style="color: red; font-weight: bold;">${weightLossCaloriesResult.value} kcal</span>
+                <br>
+                <span style="color: red; font-size: 0.75em;">(Warning: below recommended safe minimum of 1500 kcal/day)</span>
+            `;
+        } else {
+            weightLossCalories.textContent = `${weightLossCaloriesResult.value} kcal`;
+        }
     }
+    
+    // Show diet proposal modal after all results are displayed
+    showDietModal();
   });
 });
