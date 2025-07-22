@@ -90,30 +90,28 @@
             </div>
         </div>
 
-        <!-- Diet Proposal Subscription Modal -->
-        <div id="dietModal" class="modal">
-      <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>Subscribe for a Custom Diet Proposal</h2>
-<p style="font-size:1.1em; font-weight:bold; color:#388e3c; margin-bottom:1em;">Get your custom diet for free!</p>
-        <form id="dietForm" autocomplete="off">
-          <div class="input-group">
-            <label for="dietEmail">Email address:</label>
-            <input type="email" id="dietEmail" name="dietEmail" required placeholder="you@email.com">
+        <!-- Daily Diet Plan Section -->
+        <div class="diet-plan" id="dietPlan">
+          <h2>Your 1-Day Diet Plan</h2>
+          <div class="meal">
+            <h3>Breakfast</h3>
+            <p id="breakfast"></p>
+            <p class="calories" id="breakfastCalories"></p>
           </div>
-          <div class="input-group">
-            <label>
-              <input type="checkbox" id="dietConsent" required>
-              I agree to receive communication via email.
-            </label>
+          <div class="meal">
+            <h3>Lunch</h3>
+            <p id="lunch"></p>
+            <p class="calories" id="lunchCalories"></p>
           </div>
-          <div class="modal-actions">
-            <button type="submit" id="subscribeBtn" disabled>Subscribe</button>
-            <button type="button" id="cancelModal">Cancel</button>
+          <div class="meal">
+            <h3>Dinner</h3>
+            <p id="dinner"></p>
+            <p class="calories" id="dinnerCalories"></p>
           </div>
-        </form>
-      </div>
-    </div>
+          <div class="meal-total">
+            <h3>Total Calories: <span id="totalCalories">0</span> kcal</h3>
+          </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

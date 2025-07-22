@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tdeeResult = document.getElementById('tdeeResult');
     const safeDeficit = document.getElementById('safeDeficit');
     const weightLossCalories = document.getElementById('weightLossCalories');
+    const dietPlanSection = document.getElementById('dietPlan');
 
     // Event Listener
 calculateBtn.addEventListener('click', () => {
@@ -142,6 +143,7 @@ calculateBtn.addEventListener('click', () => {
 
     // Display results
     resultsSection.style.display = 'grid';
+    dietPlanSection.style.display = 'none'; // Hide diet plan initially
     const { value: bmiValue, category: bmiCategory } = bmi;
     bmiResult.textContent = `${bmiValue} (${bmiCategory})`;
     bmrResult.textContent = `${bmr} kcal`;
@@ -173,7 +175,69 @@ calculateBtn.addEventListener('click', () => {
         }
     }
     
-    // Show diet proposal modal after all results are displayed
-    showDietModal();
+        // Generate and display diet plan
+    generateDietPlan(weightLossCaloriesResult.value || weightLossCaloriesResult.calculated || 0);
   });
 });
+
+// Diet plan generation
+function generateDietPlan(totalCalories) {
+  // Define food options with calorie counts
+  const foodOptions = {
+    breakfast: [
+      { name: 'Oatmeal with banana and honey', calories: 300 },
+      { name: 'Greek yogurt with berries and granola', calories: 350 },
+      { name: 'Scrambled eggs with whole wheat toast', calories: 400 },
+      { name: 'Smoothie bowl with fruits and nuts', calories: 380 },
+      { name: 'Avocado toast with poached eggs', calories: 420 }
+    ],
+    lunch: [
+      { name: 'Grilled chicken salad with vinaigrette', calories: 450 },
+      { name: 'Quinoa bowl with roasted vegetables', calories: 400 },
+      { name: 'Turkey and avocado wrap', calories: 480 },
+      { name: 'Lentil soup with whole grain bread', calories: 380 },
+      { name: 'Grilled salmon with sweet potato', calories: 500 }
+    ],
+    dinner: [
+      { name: 'Grilled fish with steamed vegetables', calories: 450 },
+      { name: 'Stir-fried tofu with brown rice', calories: 400 },
+      { name: 'Baked chicken with quinoa and greens', calories: 480 },
+      { name: 'Vegetable curry with basmati rice', calories: 420 },
+      { name: 'Lean beef with mashed cauliflower', calories: 500 }
+    ]
+  };
+
+  // Calculate target calories per meal (40% breakfast, 30% lunch, 30% dinner)
+  const targetBreakfast = Math.round(totalCalories * 0.35);
+  const targetLunch = Math.round(totalCalories * 0.4);
+  const targetDinner = Math.round(totalCalories * 0.25);
+
+  // Find closest matching meals
+  const breakfast = findClosestMeal(foodOptions.breakfast, targetBreakfast);
+  const lunch = findClosestMeal(foodOptions.lunch, targetLunch);
+  const dinner = findClosestMeal(foodOptions.dinner, targetDinner);
+
+  // Update the DOM
+  document.getElementById('breakfast').textContent = breakfast.name;
+  document.getElementById('breakfastCalories').textContent = `${breakfast.calories} kcal`;
+  
+  document.getElementById('lunch').textContent = lunch.name;
+  document.getElementById('lunchCalories').textContent = `${lunch.calories} kcal`;
+  
+  document.getElementById('dinner').textContent = dinner.name;
+  document.getElementById('dinnerCalories').textContent = `${dinner.calories} kcal`;
+  
+  const totalPlanCalories = breakfast.calories + lunch.calories + dinner.calories;
+  document.getElementById('totalCalories').textContent = totalPlanCalories;
+  
+  // Show the diet plan section
+  document.getElementById('dietPlan').style.display = 'block';
+}
+
+function findClosestMeal(meals, targetCalories) {
+  return meals.reduce((prev, curr) => 
+    Math.abs(curr.calories - targetCalories) < Math.abs(prev.calories - targetCalories) 
+      ? curr 
+      : prev
+  );
+}
